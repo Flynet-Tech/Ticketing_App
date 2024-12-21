@@ -119,9 +119,8 @@ def home_view(request):
                     payment_type=payment_type,
                 )
                 ticket.save()
-
                 # return redirect('home')  # Redirect to a success page or wherever needed
-                return HttpResponseRedirect(reverse('home'))
+                return HttpResponseRedirect('/home')
             
 
             except Exception as e:

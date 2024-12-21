@@ -321,87 +321,58 @@
     </div>
 
     <script>
-        const ctx = document.getElementById('salesChart').getContext('2d');
-      
-        // Initialize the chart with default data
-        const salesChart = new Chart(ctx, {
+      const ctx = document.getElementById('salesChart').getContext('2d');
+  
+      // Pass the data dynamically from the backend
+      const totalAdultAmount = {{ total_adult_amount|default:0 }};
+      const totalChildrenAmount = {{ total_children_amount|default:0 }};
+      const totalStudentAmount = {{ total_student_amount|default:0 }};
+  
+      const salesChart = new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ['Adults', 'Children', 'Students'], // Default labels
-            datasets: [{
-              label: 'Total Sales Amount',
-              data: [75,2 ,2], // Default data
-              backgroundColor: ['MediumSeaGreen', 'MediumSeaGreen', 'MediumSeaGreen'],
-              borderRadius: 3,
-              barPercentage: 0.4
-            }]
+              labels: ['Adults', 'Children', 'Students'],
+              datasets: [{
+                  label: 'Total Sales Amount',
+                  data: [totalAdultAmount, totalChildrenAmount, totalStudentAmount],
+                  backgroundColor: ['MediumSeaGreen', 'MediumSeaGreen', 'MediumSeaGreen'],
+                  borderRadius: 3,
+                  barPercentage: 0.4
+              }]
           },
           options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                display: true,
-                position: 'top'
+              responsive: true,
+              plugins: {
+                  legend: {
+                      display: true,
+                      position: 'top'
+                  },
+                  title: {
+                      display: false
+                  }
               },
-              title: {
-                display: false
+              scales: {
+                  x: {
+                      grid: {
+                          display: false
+                      },
+                      ticks: {
+                          beginAtZero: true
+                      }
+                  },
+                  y: {
+                      grid: {
+                          display: false
+                      },
+                      ticks: {
+                          beginAtZero: true
+                      }
+                  }
               }
-            },
-            scales: {
-              x: {
-                grid: {
-                  display: false // Removes grid lines on X-axis
-                },
-                ticks: {
-                  beginAtZero: true
-                }
-              },
-              y: {
-                grid: {
-                  display: false // Removes grid lines on Y-axis
-                },
-                ticks: {
-                  beginAtZero: true
-                }
-              }
-            }
           }
-        });
-      
-        // Function to dynamically update the chart data
-        const updateChart = (labels, data) => {
-          salesChart.data.labels = labels; // Update labels dynamically
-          salesChart.data.datasets[0].data = data; // Update data dynamically
-          salesChart.update(); // Refresh the chart
-        };
-      
-        // Simulate a dynamic update with a button click
-        document.getElementById('updateDataBtn').addEventListener('click', function () {
-          // Simulated new data (You can replace this with an API call)
-          const newLabels = ['Seniors', 'Teens', 'Kids']; // New labels
-          const newData = [20000000, 15000000, 5000000]; // New dataset values
-      
-          // Update the chart with the new data
-          updateChart(newLabels, newData);
-        });
-        document.getElementById('fetchDataBtn').addEventListener('click', async function () {
-    try {
-      // Fetch data from an API
-      const response = await fetch('/api/sales-data'); // Replace with your API endpoint
-      const data = await response.json();
-
-      // Assuming the API returns data like { labels: ['A', 'B', 'C'], values: [10, 20, 30] }
-      const newLabels = data.labels;
-      const newData = data.values;
-
-      // Update the chart with fetched data
-      updateChart(newLabels, newData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  });
-      </script>
-      
+      });
+  </script>
+  
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
