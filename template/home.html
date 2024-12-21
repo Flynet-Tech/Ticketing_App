@@ -15,13 +15,13 @@
         <div class="col-md-2"> 
             <div class="sidebar d-none d-lg-block" style="width: 16%;">
                 <div style="display: flex; justify-content: center;padding-top: 20px;">
-                    <img class="img" src="{% static 'assets/AAZP_logo.png' %}" alt="zoo logo"">
+                    <img class="img" src="{% static 'assets/AAZP_logo.png' %}" alt="zoo logo">
                 </div>        <br><br><br>
                 <a href="home" class="active text-center d-flex align-items-center justify-content-center">
                     <img src="{% static 'assets/local_activity.png' %}" alt="Ticket Icon" style="width: 20px; height: 20px; margin-right: 5px;">
                     Ticket Collection
                 </a>
-                                <a href="logout" class="text-center" style="position: absolute; bottom: 20px; width: 100%; color: red;">Logout</a>
+                <a href="logout" class="text-center" style="position: absolute; bottom: 20px; width: 100%; color: #7a1e27;"><img src="{% static 'assets/logout[1].png' %}" alt="" srcset="">Logout</a>
             </div> 
         </div>
         <div class="col-md-10">
@@ -52,27 +52,30 @@
                             alt="Right Logo for smaller screens"
                             style="max-height: 50px; width: auto;"
                         />
-                        <a href="logout" class="text-center d-block d-sm-none" style="position: absolute; bottom: 20px; width: 100%; color: red;">Logout</a>
-
+                        
                     </div>
             
                 </div>
                 
                         <hr style="border-top: 2px solid #a7a7a7;">
+
+                        <a href="logout" class="text-center d-block d-sm-none sm-pr-5" style="position: absolute; top:90px; left: 155px; bottom: 20px; width: 100%; color: red;">Logout</a>     
+
                     
                     <div class="container">
                         <form method="POST" action="">
                             {% csrf_token %}
                         <div class="row">
+                            <div class="col-md-12 main-content">
+                                <div class="d-flex justify-content-start align-items-start mb-4 pt-4 text-start" style="font-family: inter; font-size: 20px; font-weight: 600;">
+                                    <div>
+                                        <h5>Ticket Collection</h5>
+                                    </div>
+                                </div>                                            
+                            </div>
                                     <div class="col-md-7">
-                                        <div class="col-md-10 main-content">
-                                            <div class="d-flex justify-content-between align-items-center mb-4 pt-4" style="font-family: inter; font-size: 20px; font-weight: 600;">
-                                                <div>
-                                                    <h5>Ticket Collection</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
+                                        
+                                        <div class="form-group" id="ticketForm">
                                             <h1 style="font-weight: 600; font-size: 16px;">Adult</h1>
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -91,11 +94,11 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label for="childrenCount">Count</label>
-                                                    <input type="number" id="childrenCount" name="children_count" class="form-control" placeholder="Enter number of children" min="0" step="1">        
+                                                    <input type="number" id="childrenCount" name="children_count" class="form-control" placeholder="Enter number of children" min="0" maxlength="5" step="1">        
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="childrenCount">Total amount</label>
-                                                    <input type="text" id="childrenAmount" class="form-control" placeholder="Amount" readonly>
+                                                    <input type="text" id="childrenAmount" class="form-control" placeholder="Amount" readonly >
                                                 </div>
                                             </div>
                                         </div>
@@ -104,25 +107,26 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label for="studentCount">Count</label>
-                                                    <input type="number" id="studentCount" name="student_count" class="form-control" placeholder="Enter number of students" >
+                                                    <input type="number" id="studentCount" name="student_count" class="form-control" placeholder="Enter number of students" min="0" maxlength="5" step="1">
                                                 </div>
                                                 <div class="col-md-6">  
                                                     <label for="studentCount">Total amount</label>
-                                                    <input type="text" id="studentAmount" class="form-control" placeholder="Amount" readonly>
+                                                    <input type="text" id="studentAmount" class="form-control" placeholder="Amount" readonly >
                                                 </div>
                                             </div>
                                         </div><br>
-                                        <div class="total-section">
-                                            <h5>Total: Rs <span id="totalAmount">888.88</span></h5>
-                                        </div><br>
+                                        
                                         <div class="mt-1 mb-0"></div>
                                             <div class="alert alert-light" style="background-color: #f7f7f7; border: 0.8px solid #a7a7a7; font-family: inter; font-weight: 400; border-radius : 8px;">
                                                 <strong style="color: #004d00;">Note*</strong><br>Each adult user costs 500 rupees, each kid costs 250 rupees, and each student costs 70 rupees.
                                             </div>
+                                            <div class="total-section" style="font-size: 10px;">
+                                                <h5>Total: Rs <span id="totalAmount">888.88</span></h5>
+                                            </div><br>
                                     </div>
                                     <div class="col-md-1"></div>
                                         <div class="col-md-4">
-                                            <div class="order-summary" style="padding: 20px; border-radius: 10px;">
+                                            <div class="order-summary" style="padding-top: 20px; border-radius: 10px;">
                                                 <h5 style="font-weight: bold; margin-bottom: 20px;">Order Summary</h5>
                                                 <p style="font-weight: bold;">Ticket No: <span id="ticketNumber"></span></p>
 
@@ -130,37 +134,32 @@
                                                     // Retrieve the ticket number from local storage or start from 1
                                                     let ticketCounter = localStorage.getItem('ticketCounter') ? parseInt(localStorage.getItem('ticketCounter')) : 1;
                                                 
-                                                    // Function to generate and display the ticket number
-                                                    function generateTicketNumber() {
-                                                        // Set the ticket number in the HTML
+                                                    // Function to display the current ticket number
+                                                    function displayTicketNumber() {
                                                         document.getElementById('ticketNumber').textContent = `#${ticketCounter}`;
-                                                
-                                                        // Increment the ticket number for the next ticket
-                                                        ticketCounter++;
-                                                
-                                                        // Store the updated ticket number in local storage
-                                                        localStorage.setItem('ticketCounter', ticketCounter);
                                                     }
                                                 
-                                                    // Call the function when the page loads or when a ticket is generated
-                                                    window.onload = generateTicketNumber;
+                                                    // Call this function on page load to display the ticket number
+                                                    window.onload = displayTicketNumber;
+                                                
+                                                  
                                                 </script>
                                                                                             
                                                 <div style="display: flex; justify-content: space-between;">
                                                     <p>Adults</p>
-                                                    <p><span id="summaryAdults">1 * 888</span></p>
-                                                    <p>Rs. <span id="adultsPrice">888.88</span></p>
+                                                    <p><span id="summaryAdults">1 * 000</span></p>
+                                                    <p>Rs. <span id="adultsPrice">000.00</span></p>
                                                 </div>
                                                 
                                                 <div style="display: flex; justify-content: space-between;">
                                                     <p>Children</p>
-                                                    <p><span id="summaryChildren">1 * 888</span></p>
-                                                    <p>Rs. <span id="childrenPrice">888.88</span></p>
+                                                    <p><span id="summaryChildren">1 * 000</span></p>
+                                                    <p>Rs. <span id="childrenPrice">000.00</span></p>
                                                 </div>
                                                   <div style="display: flex; justify-content: space-between;">
                                                     <p>Students</p>
-                                                    <p><span id="summaryStudents">1 * 888</span></p>
-                                                    <p>Rs. <span id="studentsPrice">888.88</span></p>
+                                                    <p><span id="summaryStudents">1 * 000</span></p>
+                                                    <p>Rs. <span id="studentsPrice">000.00</span></p>
                                                 </div>
                                                 
                                                 
@@ -168,7 +167,7 @@
                                                 
                                                 <div style="display: flex; justify-content: space-between; font-weight: bold;">
                                                     <p>Overall total</p>
-                                                    <p>Rs. <span id="summaryTotal">888.88</span></p>
+                                                    <p>Rs. <span id="summaryTotal">000.00</span></p>
                                                 </div>
                                             </div>
                                             
@@ -265,7 +264,7 @@
                                             
                                         <br>
                                         <!-- <button class="print" type="button" onclick="processPayment()" style="width: 100px; height: 40px; border-radius: 10px; color: green;">Print</button> -->
-                                        <button class="pay_now" type="submit" onclick="validateAndPay()" style="width: 100px; height: 40px; border-radius: 10px;  background-color: #002400; color: #f7f7f7;">Pay now</button>
+                                        <button class="pay_now" type="submit" onclick="validateAndPay(),payNow()" style="width: 100px; height: 40px; border-radius: 10px;  background-color: #002400; color: #f7f7f7;">Pay now</button>
                                     </div>
                         </div>
                                    
@@ -367,17 +366,38 @@
         const studentCount = document.getElementById('studentCount').value;
 
         // Check if all fields are filled
-        if (adultCount === '' && childrenCount === '' && studentCount === '') {
-            alert("Please enter at least one ticket count before proceeding to payment.");
+        if (adultCount <= 0 && childrenCount <= 0 && studentCount <= 0) {
+            alert("Please enter at least one valid ticket count.");
             return;
-        }
-
-        // You can add further validation if needed, like checking for negative values.
-        
-        // Proceed to payment (You can add your form submission logic here)
-        alert("Proceeding to payment...");
+            }
+                                                
+          // Increment the ticket counter only when Pay Now is clicked
+          ticketCounter++;
+          localStorage.setItem('ticketCounter', ticketCounter);
+                                                
+       // Refresh the ticket number display
+           displayTicketNumber();
+                                                
+        alert("Payment successful! Ticket generated.");
         // Submit form or handle payment processing logic here
+        
     }
+    document.getElementById('ticketForm').addEventListener('submit', function(event) {
+        const adultCountInput = document.getElementById('adultCount');
+        const childrenCountInput = document.getElementById('childrenCount');
+        const studentCountInput = document.getElementById('studentCount');
+        const errorMessage = document.getElementById('error-message');
+
+        // Ensure that the input values are exactly 5 digits long and contain only digits
+        const adultCountValue = adultCountInput.value;
+        const childrenCountValue = childrenCountInput.value;
+        const studentCountValue = studentCountInput.value;
+
+        let valid = true;
+    // JavaScript code to restrict input to 5-digit numbers
+
+
+    });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

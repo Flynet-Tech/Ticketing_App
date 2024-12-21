@@ -12,6 +12,11 @@ import openpyxl
 from django.db.models import Sum
 from django.utils.dateparse import parse_date  # Use to parse the date
 from datetime import datetime
+from django.utils.cache import add_never_cache_headers
+from django.views.decorators.cache import cache_control  # Import cache_control
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 
 
 def add_user_view(request):
@@ -115,7 +120,9 @@ def home_view(request):
                 )
                 ticket.save()
 
-                return redirect('home')  # Redirect to a success page or wherever needed
+                # return redirect('home')  # Redirect to a success page or wherever needed
+                return HttpResponseRedirect(reverse('home'))
+            
 
             except Exception as e:
                 # Handle any errors, log them if necessary
@@ -197,6 +204,7 @@ def ticket_report_view(request):
     elif filter_option == 'day_before_yesterday':
         day_before_yesterday = today - timedelta(days=2)
         collection_report = collection_report.filter(created_at__date=day_before_yesterday)
+        
     
     # Convert start_date and end_date to proper date objects if provided
     if start_date and end_date:
@@ -223,6 +231,7 @@ def ticket_report_view(request):
         'start_date': start_date,
         'end_date': end_date,
     })
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def ticket_sales_summary_view(request):
     if not request.user.is_authenticated:
         return redirect('login')  # Redirect to the login page if the user is not authenticated
@@ -271,4 +280,6 @@ def ticket_sales_summary_view(request):
         'selected_date': selected_date,
     }
 
-    return render(request, 'ticket_sales_summary.html', context)
+    response = render(request, 'ticket_sales_summary.html', context)
+    add_never_cache_headers(response)  # Add headers to prevent caching
+    return response

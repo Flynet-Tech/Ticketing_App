@@ -31,14 +31,14 @@
     </style>
 </head>
 <body>
-    <div class="row" style="overflow: hidden;">
+     <div class="row" style="overflow: hidden;">
         <div class="col-md-2">
             <div class="sidebar d-none d-lg-block" style="width: 16%;">
                 <div style="display: flex; justify-content: center;padding-top: 20px;">
                     <img class="img" src="{% static 'assets/AAZP_logo.png' %}" alt="zoo logo">
                 </div>
                 <br><br><br>
-                <a href="collection_report" class="text-center d-flex align-items-center justify-content-sm-center">
+                <a href="collection_report" class="text-center d-flex align-items-center justify-content-sm-center "style="background-color: #d9f7d9;">
                     <img src="{% static 'assets/lab_profile.png' %}" alt="Ticket Icon" style="width: 20px; height: 20px; margin-right: 5px;">
                     Collection Report
                 </a>
@@ -46,7 +46,7 @@
                     <img src="{% static 'assets/problem.png' %}" alt="Ticket Icon" style="width: 20px; height: 20px; margin-right: 5px;">
                     &nbsp;&nbsp;Detailed Report
                 </a>
-                <a href="logout" class="text-center" style="position: absolute; bottom: 20px; width: 100%; color: red;">Logout</a>
+                <a href="logout" class="text-center" style="position: absolute; bottom: 20px; width: 100%; color:  #7a1e27;"><img src="{% static 'assets/logout[1].png' %}" alt="" srcset="">Logout</a>
              </div>
         </div>
         <div class="col-md-10">
@@ -113,28 +113,45 @@
                       
                       <!-- Filter by -->
                       <div class="col-12 col-md-2 text-center">
-                          <label for="filter">Filter by:</label>
-                          <select id="filter" name="filter" class="form-control" onchange="this.form.submit()" 
-                                  style="height: 33px; background-color: white; border-radius: 5px; border: 0.5px solid #dee1e5; text-align: center;">
-                              <option value="">All</option>
-                              <option value="today" {% if filter_option == 'today' %}selected{% endif %}>Today</option>
-                              <option value="yesterday" {% if filter_option == 'yesterday' %}selected{% endif %}>Yesterday</option>
-                              <option value="day_before_yesterday" {% if filter_option == 'day_before_yesterday' %}selected{% endif %}>Day Before Yesterday</option>
-                          </select>
+                        <label for="filter">Filter by:</label>
+                        <select id="filter" name="filter" class="form-control" onchange="this.form.submit()" 
+                                style="height: 33px; background-color: white; border-radius: 5px; border: 0.5px solid #dee1e5; text-align: center;">
+                            <option value="">All</option>
+                            <option value="today" {% if filter_option == 'today' %}selected{% endif %}>Today</option>
+                            <option value="yesterday" {% if filter_option == 'yesterday' %}selected{% endif %}>Yesterday</option>
+                            <option value="week" {% if filter_option == 'week' %}selected{% endif %}>Week</option>
+                            <option value="month" {% if filter_option == 'month' %}selected{% endif %}>1 Month</option>
+                        </select>
                       </div>
+                      
                       
                       <!-- Start Date -->
-                      <div class="col-12 col-md-2 text-center">
+                      <div class="row">
+                        <!-- Start Date -->
+                        <div class="col-12 col-md-6 text-center">
                           <label for="start_date">Start Date:</label>
-                          <input type="date" id="start_date" name="start_date" class="form-control text-center" 
-                                 value="{{ start_date }}" style="height: 35px;">
-                      </div>
-                      
-                      <!-- End Date -->
-                      <div class="col-12 col-md-2 text-center">
+                          <input 
+                            type="date" 
+                            id="start_date" 
+                            name="start_date" 
+                            class="form-control text-center" 
+                            style="height: 35px;" 
+                            onchange="handleStartDateChange()"
+                          >
+                        </div>
+                        
+                        <!-- End Date -->
+                        <div class="col-12 col-md-6 text-center">
                           <label for="end_date">End Date:</label>
-                          <input type="date" id="end_date" name="end_date" class="form-control text-center" 
-                                 value="{{ end_date }}" style="height: 35px;">
+                          <input 
+                            type="date" 
+                            id="end_date" 
+                            name="end_date" 
+                            class="form-control text-center" 
+                            style="height: 35px;" 
+                            onchange="handleEndDateChange()"
+                          >
+                        </div>
                       </div>
                       
                       <!-- Filter Button -->
@@ -151,7 +168,7 @@
               <br>
         
                 <!-- Table Section -->
-                <div class="table-responsive" style="max-height:720px; overflow-y: auto;">
+                <div class="table-responsive" style=" overflow-y: auto;">
                     <table class="table table-group-divider table-hover" style="border: 1px solid #eaf7ea; border-radius: 20px;">
                             <thead class="header" style="background-color: #eaf7ea; position: sticky; top: 0; z-index: 1; font-family: inter; font-size: 600; font-size: 14px;">
                                 <tr>
@@ -209,6 +226,33 @@
         // Ensure no overflows
         document.body.style.overflowX = "hidden";
     </script>
+    <script>
+        // Function to handle Start Date change
+        function handleStartDateChange() {
+          const startDateInput = document.getElementById('start_date');
+          const endDateInput = document.getElementById('end_date');
+          
+          const startDate = startDateInput.value;
+      
+          if (startDate) {
+            // Disable all dates before the selected start date in the end date input
+            endDateInput.min = startDate;
+          }
+        }
+      
+        // Function to handle End Date change
+        function handleEndDateChange() {
+          const startDateInput = document.getElementById('start_date');
+          const endDateInput = document.getElementById('end_date');
+          
+          const endDate = endDateInput.value;
+      
+          if (endDate) {
+            // Disable all dates after the selected end date in the start date input
+            startDateInput.max = endDate;
+          }
+        }
+      </script>
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
