@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure---xl*!n@g!val&y8ut1!(g@d#-f82hd#)8@o(u#m$hpzwpmrw$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Enter the URLs you want to access your application
 ALLOWED_HOSTS = ["*"]
 
 
