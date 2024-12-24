@@ -15,7 +15,7 @@
         <div class="col-md-2"> 
             <div class="sidebar d-none d-lg-block d-md-block" style="width: 16%;">
                 <div style="display: flex; justify-content: center;padding-top: 20px;">
-                    <img class="img" src="{% static 'assets/AAZP_logo.png' %}" alt="zoo logo">
+                    <img class="img" src="{% static 'assets/AAZP_logo.png' %}" alt="zoo logo"">
                 </div>        <br><br><br>
                 <a href="home" class="active text-center d-flex align-items-center justify-content-center">
                     <img src="{% static 'assets/local_activity.png' %}" alt="Ticket Icon" style="width: 20px; height: 20px; margin-right: 5px;">
@@ -32,35 +32,34 @@
                             src="{% static 'assets/tn_logo.png' %}"
                             class="img-fluid d-none d-md-block"
                             alt="Left Logo for larger screens"
-                            style="max-height: 50px; width: auto;"
+                            style="max-height: 43px; width: auto;"
                         />
                         <img
                             src="{% static 'assets/AAZP_logo.png' %}"
                             class="img-fluid d-block d-md-none"
                             alt="Left Logo for smaller screens"
-                            style="max-height: 50px; width: auto;"
+                            style="max-height: 43px; width: auto;"
                         />
                         <img
                             src="{% static 'assets/unnamed.png' %}"
                             class="img-fluid d-none d-md-block"
                             alt="Right Logo for larger screens"
-                            style="max-height: 50px; width: 300px;"
+                            style="max-height: 43px; width: auto;"
                         />
                         <img
                             src="{% static 'assets/image.png' %}"
                             class="img-fluid d-block d-md-none"
                             alt="Right Logo for smaller screens"
-                            style="max-height: 50px; width: auto;"
+                            style="max-height: 43px; width: auto;"
                         />
-                        
+                        <!-- <a href="logout" class="text-center d-block d-sm-none" style="position: absolute; bottom: 20px; width: 100%; color: red;">Logout</a> -->
+
                     </div>
             
                 </div>
                 
                         <hr style="border-top: 2px solid #a7a7a7;">
-
-                        <a href="logout" class="text-center d-flex d-md-none d-sm-none " style=" padding-right: px; justify-content: end; width: 100%; color: red;">Logout</a>
-                    
+                       <a href="logout" class="text-center d-flex d-md-none d-sm-none " style=" padding-right: 10px; justify-content: end; width: 100%; color: red;">Logout</a>
                     <div class="container">
                         <form method="POST" action="">
                             {% csrf_token %}
@@ -74,17 +73,17 @@
                             </div>
                                     <div class="col-md-7">
                                         
-                                        <div class="form-group" id="ticketForm">
+                                        <div class="form-group">
                                             <h1 style="font-weight: 600; font-size: 16px;">Adult</h1>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label for="adultCount">Count</label>
-                                                    <input type="number" id="adultCount" name="adult_count" class="form-control" placeholder="Enter number of adults" min="0" step="1">
+                                                    <input type="number" oninput="validateNumeric(event)" id="adultCount" name="adult_count" class="form-control" placeholder="Enter number of adults" min="0" step="1">
             
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="adultCount">Total amount</label>
-                                                    <input type="text" id="adultAmount" class="form-control" placeholder="Amount" readonly>        
+                                                    <input type="text"  id="adultAmount" class="form-control" placeholder="Amount" readonly>        
                                                 </div>
                                             </div>
                                         </div>
@@ -93,11 +92,11 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label for="childrenCount">Count</label>
-                                                    <input type="number" id="childrenCount" name="children_count" class="form-control" placeholder="Enter number of children" min="0" maxlength="5" step="1">        
+                                                    <input type="number" oninput="validateNumeric(event)" id="childrenCount" name="children_count" class="form-control" placeholder="Enter number of children" min="0" step="1">        
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="childrenCount">Total amount</label>
-                                                    <input type="text" id="childrenAmount" class="form-control" placeholder="Amount" readonly >
+                                                    <input type="text" id="childrenAmount" class="form-control" placeholder="Amount" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -106,18 +105,18 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label for="studentCount">Count</label>
-                                                    <input type="number" id="studentCount" name="student_count" class="form-control" placeholder="Enter number of students" min="0" maxlength="5" step="1">
+                                                    <input type="number" oninput="validateNumeric(event)" id="studentCount" name="student_count" class="form-control" placeholder="Enter number of students" min="0" step="1">
                                                 </div>
                                                 <div class="col-md-6">  
                                                     <label for="studentCount">Total amount</label>
-                                                    <input type="text" id="studentAmount" class="form-control" placeholder="Amount" readonly >
+                                                    <input type="text" id="studentAmount" class="form-control" placeholder="Amount" readonly>
                                                 </div>
                                             </div>
                                         </div><br>
                                         
                                         <div class="mt-1 mb-0"></div>
                                             <div class="alert alert-light" style="background-color: #f7f7f7; border: 0.8px solid #a7a7a7; font-family: inter; font-weight: 400; border-radius : 8px;">
-                                                <strong style="color: #004d00;">Note*</strong><br>Each adult user costs 500 rupees, each kid costs 250 rupees, and each student costs 75 rupees.
+                                                <strong style="color: #004d00;">Note*</strong><br>Each adult user costs 500 rupees, each kid costs 250 rupees, and each student costs 70 rupees.
                                             </div>
                                             <div class="total-section" style="font-size: 10px;">
                                                 <h5>Total: Rs <span id="totalAmount">0.00</span></h5>
@@ -135,30 +134,46 @@
                                                 
                                                     // Function to display the current ticket number
                                                     function displayTicketNumber() {
+                                                        // Set the current ticket number in the HTML
                                                         document.getElementById('ticketNumber').textContent = `#${ticketCounter}`;
                                                     }
                                                 
-                                                    // Call this function on page load to display the ticket number
-                                                    window.onload = displayTicketNumber;
+                                                    // Function to increment and save the ticket number after processing
+                                                    function processTicket() {
+                                                        // Increment the ticket counter
+                                                        ticketCounter++;
                                                 
-                                                  
+                                                        // Update the ticket number in local storage
+                                                        localStorage.setItem('ticketCounter', ticketCounter);
+                                                
+                                                        // Update the displayed ticket number
+                                                        displayTicketNumber();
+                                                
+                                                        // Confirm action
+                                                        alert("Ticket processed successfully!");
+                                                    }
+                                                
+                                                    // Ensure the ticket number is displayed when the page loads
+                                                    window.onload = displayTicketNumber;
                                                 </script>
+                                                
+                                                
                                                                                             
                                                 <div style="display: flex; justify-content: space-between;">
                                                     <p>Adults</p>
-                                                    <p><span id="summaryAdults">0 *500 </span></p>
-                                                    <p>Rs. <span id="adultsPrice">000.00</span></p>
+                                                    <p><span id="summaryAdults">0 * 500</span></p>
+                                                    <p>Rs. <span id="adultsPrice">0.00</span></p>
                                                 </div>
                                                 
                                                 <div style="display: flex; justify-content: space-between;">
                                                     <p>Children</p>
-                                                    <p><span id="summaryChildren">0 *250 </span></p>
-                                                    <p>Rs.<span id="childrenPrice">000.00</span></p>
+                                                    <p><span id="summaryChildren">0 * 250</span></p>
+                                                    <p>Rs. <span id="childrenPrice">0.00</span></p>
                                                 </div>
                                                   <div style="display: flex; justify-content: space-between;">
                                                     <p>Students</p>
-                                                    <p><span id="summaryStudents">0 *75</span></p>
-                                                    <p>Rs. <span id="studentsPrice">000.00</span></p>
+                                                    <p><span id="summaryStudents">0 * 75</span></p>
+                                                    <p>Rs. <span id="studentsPrice">0.00</span></p>
                                                 </div>
                                                 
                                                 
@@ -166,7 +181,7 @@
                                                 
                                                 <div style="display: flex; justify-content: space-between; font-weight: bold;">
                                                     <p>Overall total</p>
-                                                    <p>Rs. <span id="summaryTotal">000.00</span></p>
+                                                    <p>Rs. <span id="summaryTotal">0.00</span></p>
                                                 </div>
                                             </div>
                                             
@@ -197,7 +212,13 @@
                                             
                                             <!-- CSS -->
                                             <style>
-                                                .payment-methods {
+                                                .body{
+                                                    margin: 0;
+                                                }
+                                                .html{
+                                                    overflow-y: scroll;
+                                }
+                                         .payment-methods {
                                                     display: flex;
                                                     flex-direction: column;
                                                     gap: 10px;
@@ -263,7 +284,7 @@
                                             
                                         <br>
                                         <!-- <button class="print" type="button" onclick="processPayment()" style="width: 100px; height: 40px; border-radius: 10px; color: green;">Print</button> -->
-                                        <button class="pay_now" type="submit" onclick="validateAndPay(),payNow()" style="width: 100px; height: 40px; border-radius: 10px;  background-color: #002400; color: #f7f7f7;">Pay now</button>
+                                        <button class="pay_now" type="submit"onclick="processTicket()" style="width: 100px; height: 40px; border-radius: 10px;  background-color: #002400; color: #f7f7f7;">Pay now</button>
                                     </div>
                         </div>
                                    
@@ -323,7 +344,7 @@
 
         const adultAmount = adultCount * 500;
         const childrenAmount = childrenCount * 250;
-        const studentAmount = studentCount * 75;
+        const studentAmount = studentCount * 70;
  // Update the prices in the HTML
         document.getElementById('adultsPrice').textContent = adultAmount.toFixed(2);
         document.getElementById('childrenPrice').textContent = childrenAmount.toFixed(2);
@@ -365,40 +386,26 @@
         const studentCount = document.getElementById('studentCount').value;
 
         // Check if all fields are filled
-        if (adultCount <= 0 && childrenCount <= 0 && studentCount <= 0) {
-            alert("Please enter at least one valid ticket count.");
+        if (adultCount === '' && childrenCount === '' && studentCount === '') {
+            alert("Please enter at least one ticket count before proceeding to payment.");
             return;
-            }
-                                                
-          // Increment the ticket counter only when Pay Now is clicked
-          ticketCounter++;
-          localStorage.setItem('ticketCounter', ticketCounter);
-                                                
-       // Refresh the ticket number display
-           displayTicketNumber();
-                                                
-        alert("Payment successful! Ticket generated.");
-        // Submit form or handle payment processing logic here
+        }
+
+        // You can add further validation if needed, like checking for negative values.
         
+        // Proceed to payment (You can add your form submission logic here)
+        alert("Proceeding to payment...");
+        // Submit form or handle payment processing logic here
     }
-    document.getElementById('ticketForm').addEventListener('submit', function(event) {
-        const adultCountInput = document.getElementById('adultCount');
-        const childrenCountInput = document.getElementById('childrenCount');
-        const studentCountInput = document.getElementById('studentCount');
-        const errorMessage = document.getElementById('error-message');
+    
+    function validateNumeric(event) {
+        const value = event.target.value;
+        event.target.value=value.replace(/[^0-9]/g, '');
+    }
 
-        // Ensure that the input values are exactly 5 digits long and contain only digits
-        const adultCountValue = adultCountInput.value;
-        const childrenCountValue = childrenCountInput.value;
-        const studentCountValue = studentCountInput.value;
-
-        let valid = true;
-    // JavaScript code to restrict input to 5-digit numbers
-
-
-    });
     </script>
-    <br><br>
+    <br><br><br>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
