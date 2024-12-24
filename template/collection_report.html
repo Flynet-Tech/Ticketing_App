@@ -12,6 +12,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
+        .body{
+                                                    margin: 0;
+                                                }
+                                                .html{
+                                                    overflow-y: scroll;
+                                }
         /* Sidebar adjustments for mobile */
         @media (max-width: 992px) {
             .sidebar {
@@ -28,8 +34,6 @@
         .navbar-toggler-icon {
             background-image: url('https://cdn-icons-png.flaticon.com/512/1828/1828551.png');
         }
-      
-
     </style>
 </head>
 <body>
@@ -89,17 +93,17 @@
                 <nav class="navbar navbar-expand-md justify-content-center d-block d-md-none">
                     <ul class="nav nav-tabs justify-content-center" id="navId" role="tablist">
                         <li class="nav-item mx-2">
-                            <a href="collection_report" class="nav-link text-center"  style="color: #073401;">
+                            <a href="collection_report" class=" text-center"  style="color: black;">
                                 Collection Report
                             </a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a href="ticket_sales_summary" class="nav-link text-center"  style="color: #073401;">
+                            <a href="ticket_sales_summary" class="active text-center"  style="color:black;">
                                 Detailed Report
                             </a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a href="logout" class="nav-link text-center" style="color: red; margin-left: 0.5rem !important; margin-right: 0.5rem !important;">
+                            <a href="logout" class="nav-link text-center" style="color: red; border: none; padding-top: 0px ;">
                                 Logout
                             </a>
                         </li>
@@ -109,57 +113,84 @@
                 <form method="GET" action="collection_report">
                   <div class="row justify-content-center align-items-center">
                       <!-- Title -->
-                      <div class="col-12 col-md-2 text-start">
-                          <h2 class="mt-3" style="font-size: 20px;">Collection Report</h2>
-                      </div>
-                      <div class="row">
-                      <!-- Filter by -->
-                      <div class="col-12 col-md-4 text-center">
+                      <div class="col-12 col-md-3 text-start">
+                        <h2 class="mt-3" style="font-size: 20px;">Collection Report</h2>
+                    </div>
+                    
+                    <!-- Filter by -->
+                    <div class="col-12 col-md-2 text-center">
                         <label for="filter">Filter by:</label>
-                        <select id="filter" name="filter" class="form-control" onchange="handleFilterChange()" 
-                        style="height: 33px; background-color: white; border-radius: 5px; border: 0.5px solid #dee1e5; text-align: center;">
-                             <option value="">All</option>
-                             <option value="today" {% if filter_option == 'today' %}selected{% endif %}>Today</option>
-                             <option value="yesterday" {% if filter_option == 'yesterday' %}selected{% endif %}>Yesterday</option>
-                             <option value="week" {% if filter_option == 'week' %}selected{% endif %}>Week</option>
-                             <option value="month" {% if filter_option == 'month' %}selected{% endif %}>1 Month</option>
-                             <option value="custom" {% if filter_option == 'custom' %}selected{% endif %}>Custom</option>
-                        </select>
-                      </div>
+                        <select id="filter" name="filter" class="form-control" onchange="this.form.submit()" 
+                                style="height: 33px; background-color: rgb(255, 255, 255); border-radius: 5px; border: 0.5px solid #dee1e5; text-align: center;">
+                            <option value="">All</option>
+                            <option value="today" {% if filter_option == 'today' %}selected{% endif %}>Today</option>
+                            <option value="yesterday" {% if filter_option == 'yesterday' %}selected{% endif %}>Yesterday</option>
+                            <option value="last_week" {% if filter_option == 'last_week' %}selected{% endif %}>Last Week</option>
+                            <option value="last_month" {% if filter_option == 'last_month' %}selected{% endif %}>Last Month</option>
+                            <option value="custom" {% if filter_option == 'custom' %}selected{% endif %}>Custom</option>
+                        
+                          </select>
+                    </div>
+
                       
                       
                       <!-- Start Date -->
-                      
-                        <!-- Start Date -->
-                        <div class="col-12 col-md-4 text-center">
-                          <label for="start_date">Start Date:</label>
-                          <input 
+                      <div class="col-12 col-md-2 text-center">
+                        <label for="start_date">Start Date:</label>
+                        <input 
                             type="date" 
                             id="start_date" 
                             name="start_date" 
                             class="form-control text-center" 
+                            placeholder="YYYY-MM-DD" 
+                            value="{{ start_date|date:"Y-m-d" }}" 
                             style="height: 35px;" 
-                            value="{{ start_date|default:'' }}"
-                            onchange="handleStartDateChange()"
-                            disabled
-                          >
-                        </div>
-                        
+                            {% if filter_option != 'custom' %}disabled{% endif %} 
+                            onchange="validateDates()">
+                    </div>
                         <!-- End Date -->
-                        <div class="col-12 col-md-4 text-center">
-                          <label for="end_date">End Date:</label>
-                          <input 
-                            type="date" 
-                            id="end_date" 
-                            name="end_date" 
-                            class="form-control text-center" 
-                            style="height: 35px;" 
-                            value="{{ end_date|default:'' }}"
-                            onchange="handleEndDateChange()"
-                            disabled
-                          >
+                        <div class="col-12 col-md-2 text-center">
+                            <label for="end_date">End Date:</label>
+                            <input 
+                                type="date" 
+                                id="end_date" 
+                                name="end_date" 
+                                class="form-control text-center" 
+                                placeholder="YYYY-MM-DD" 
+                                value="{{ end_date|date:"Y-m-d" }}" 
+                                style="height: 35px;" 
+                                {% if filter_option != 'custom' %}disabled{% endif %} 
+                                onchange="validateDates()">
                         </div>
-                      </div>
+
+                        <script>
+                        // Enable/Disable start_date and end_date dynamically
+                        document.getElementById('filter').addEventListener('change', function () {
+                            const isCustom = this.value === 'custom';
+                            const startDateField = document.getElementById('start_date');
+                            const endDateField = document.getElementById('end_date');
+                    
+                            startDateField.disabled = !isCustom;
+                            endDateField.disabled = !isCustom;
+                        });
+                            function validateDates() {
+                                const startDateField = document.getElementById('start_date');
+                                const endDateField = document.getElementById('end_date');
+                        
+                                const startDate = new Date(startDateField.value);
+                                const endDate = new Date(endDateField.value);
+                        
+                                if (startDateField.value) {
+                                    // Ensure the End Date's minimum is set to Start Date
+                                    endDateField.min = startDateField.value;
+                                }
+                        
+                                if (endDateField.value && endDate < startDate) {
+                                    alert('The End Date cannot be earlier than the Start Date!');
+                                    endDateField.value = ''; // Reset invalid End Date
+                                }
+                            }
+                        </script>
                       
                       <!-- Filter Button -->
                       <div class="col-12 col-md-1 d-flex justify-content-center align-items-end mt-3">
@@ -239,59 +270,24 @@
     <!-- Main content with navbar for mobile devices -->
   
     <script>
-        // Ensure no overflows
-        document.body.style.overflowX = "hidden";
-    </script>
-    <script>
-        // Function to handle Start Date change
-        function handleStartDateChange() {
-          const startDateInput = document.getElementById('start_date');
-          const endDateInput = document.getElementById('end_date');
-          
-          const startDate = startDateInput.value;
-      
-          if (startDate) {
-            // Disable all dates before the selected start date in the end date input
-            endDateInput.min = startDate;
-          }
-        }
-      
-        // Function to handle End Date change
-        function handleEndDateChange() {
-          const startDateInput = document.getElementById('start_date');
-          const endDateInput = document.getElementById('end_date');
-          
-          const endDate = endDateInput.value;
-      
-          if (endDate) {
-            // Disable all dates after the selected end date in the start date input
-            startDateInput.max = endDate;
-          }
-        }
-    // Function to handle filter change
-    function handleFilterChange() {
-        const filterDropdown = document.getElementById('filter');
-        const startDateInput = document.getElementById('start_date');
-        const endDateInput = document.getElementById('end_date');
+         // Ensure no overflows
+         document.body.style.overflowX = "hidden";
 
-        if (filterDropdown.value === 'custom') {
-            // Enable the date fields for the custom option
-            startDateInput.disabled = false;
-            endDateInput.disabled = false;
-        } else {
-            // Disable the date fields for other options
-            startDateInput.disabled = true;
-            endDateInput.disabled = true;
-            // startDateInput.value = ''; // Clear the value
-            // endDateInput.value = ''; // Clear the value
-        }
+function validateDates() {
+    var startDate = document.getElementById('start_date').value;
+    var endDate = document.getElementById('end_date').value;
+
+// If Start Date is selected, set the minimum value for End Date
+    if (startDate) {
+        document.getElementById('end_date').setAttribute('min', startDate);
     }
 
-    // Add event listener to the filter dropdown
-    document.getElementById('filter').addEventListener('change', handleFilterChange);
-
-    // Call the function on page load to ensure correct state
-    handleFilterChange();
+// Check if End Date is earlier than Start Date
+    if (endDate && endDate < startDate) {
+        alert('The End Date cannot be earlier than the Start Date!');
+        document.getElementById('end_date').value = ''; // Clear the invalid End Date
+    }
+}
 
       </script>
     <!-- Bootstrap JavaScript Libraries -->
