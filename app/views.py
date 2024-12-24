@@ -103,9 +103,9 @@ def home_view(request):
         if request.method == 'POST':
             try:
                 # Retrieve POST data
-                adult_count = int(request.POST.get('adult_count') or '0')
-                children_count = int(request.POST.get('children_count') or '0')
-                student_count = int(request.POST.get('student_count') or '0')
+                adult_count = int(request.POST.get('adult_count') or '500')
+                children_count = int(request.POST.get('children_count') or '250')
+                student_count = int(request.POST.get('student_count') or '75')
 
                 payment_type = request.POST.get('payment_type')
                 total_amount = (adult_count * 500) + (children_count * 250) + (student_count * 75)
@@ -249,9 +249,9 @@ def ticket_sales_summary_view(request):
         filtered_tickets = Ticket.objects.all()
 
     # Calculate total counts and amounts
-    total_adults = filtered_tickets.aggregate(Sum('adult_count'))['adult_count__sum'] or 0
-    total_children = filtered_tickets.aggregate(Sum('children_count'))['children_count__sum'] or 0
-    total_students = filtered_tickets.aggregate(Sum('student_count'))['student_count__sum'] or 0
+    total_adults = filtered_tickets.aggregate(Sum('adult_count'))['adult_count__sum'] or 500
+    total_children = filtered_tickets.aggregate(Sum('children_count'))['children_count__sum'] or 250
+    total_students = filtered_tickets.aggregate(Sum('student_count'))['student_count__sum'] or 75
 
     # Assuming ticket prices
     adult_ticket_price = 500

@@ -13,7 +13,7 @@
 <body>
     <div class="row" style="overflow: hidden;">
         <div class="col-md-2"> 
-            <div class="sidebar d-none d-lg-block" style="width: 16%;">
+            <div class="sidebar d-none d-lg-block d-md-block" style="width: 16%;">
                 <div style="display: flex; justify-content: center;padding-top: 20px;">
                     <img class="img" src="{% static 'assets/AAZP_logo.png' %}" alt="zoo logo">
                 </div>        <br><br><br>
@@ -44,7 +44,7 @@
                             src="{% static 'assets/unnamed.png' %}"
                             class="img-fluid d-none d-md-block"
                             alt="Right Logo for larger screens"
-                            style="max-height: 50px; width: auto;"
+                            style="max-height: 50px; width: 300px;"
                         />
                         <img
                             src="{% static 'assets/image.png' %}"
@@ -59,8 +59,7 @@
                 
                         <hr style="border-top: 2px solid #a7a7a7;">
 
-                        <a href="logout" class="text-center d-block d-sm-none sm-pr-5" style="position: absolute; top:90px; left: 155px; bottom: 20px; width: 100%; color: red;">Logout</a>     
-
+                        <a href="logout" class="text-center d-flex d-md-none d-sm-none " style=" padding-right: px; justify-content: end; width: 100%; color: red;">Logout</a>
                     
                     <div class="container">
                         <form method="POST" action="">
@@ -118,10 +117,10 @@
                                         
                                         <div class="mt-1 mb-0"></div>
                                             <div class="alert alert-light" style="background-color: #f7f7f7; border: 0.8px solid #a7a7a7; font-family: inter; font-weight: 400; border-radius : 8px;">
-                                                <strong style="color: #004d00;">Note*</strong><br>Each adult user costs 500 rupees, each kid costs 250 rupees, and each student costs 70 rupees.
+                                                <strong style="color: #004d00;">Note*</strong><br>Each adult user costs 500 rupees, each kid costs 250 rupees, and each student costs 75 rupees.
                                             </div>
                                             <div class="total-section" style="font-size: 10px;">
-                                                <h5>Total: Rs <span id="totalAmount">888.88</span></h5>
+                                                <h5>Total: Rs <span id="totalAmount">0.00</span></h5>
                                             </div><br>
                                     </div>
                                     <div class="col-md-1"></div>
@@ -147,18 +146,18 @@
                                                                                             
                                                 <div style="display: flex; justify-content: space-between;">
                                                     <p>Adults</p>
-                                                    <p><span id="summaryAdults">1 * 000</span></p>
+                                                    <p><span id="summaryAdults">0 *500 </span></p>
                                                     <p>Rs. <span id="adultsPrice">000.00</span></p>
                                                 </div>
                                                 
                                                 <div style="display: flex; justify-content: space-between;">
                                                     <p>Children</p>
-                                                    <p><span id="summaryChildren">1 * 000</span></p>
-                                                    <p>Rs. <span id="childrenPrice">000.00</span></p>
+                                                    <p><span id="summaryChildren">0 *250 </span></p>
+                                                    <p>Rs.<span id="childrenPrice">000.00</span></p>
                                                 </div>
                                                   <div style="display: flex; justify-content: space-between;">
                                                     <p>Students</p>
-                                                    <p><span id="summaryStudents">1 * 000</span></p>
+                                                    <p><span id="summaryStudents">0 *75</span></p>
                                                     <p>Rs. <span id="studentsPrice">000.00</span></p>
                                                 </div>
                                                 
@@ -324,7 +323,7 @@
 
         const adultAmount = adultCount * 500;
         const childrenAmount = childrenCount * 250;
-        const studentAmount = studentCount * 70;
+        const studentAmount = studentCount * 75;
  // Update the prices in the HTML
         document.getElementById('adultsPrice').textContent = adultAmount.toFixed(2);
         document.getElementById('childrenPrice').textContent = childrenAmount.toFixed(2);
@@ -399,7 +398,7 @@
 
     });
     </script>
-
+    <br><br>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
