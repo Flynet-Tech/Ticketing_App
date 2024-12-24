@@ -13,6 +13,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{% static 'css/Home.css'%}">
     <style>
+        .body{
+                                                    margin: 0;
+                                                }
+                                                .html{
+                                                    overflow-y: scroll;
+                                }
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
@@ -229,12 +235,12 @@
                     <nav class="navbar navbar-expand-md justify-content-center d-block d-md-none">
                         <ul class="nav nav-tabs justify-content-center" id="navId" role="tablist">
                             <li class="nav-item mx-2">
-                                <a href="collection_report" class=" text-center"  style="color: #073401;">
+                                <a href="collection_report" class=" text-center"  style="color: black;">
                                     Collection Report
                                 </a>
                             </li>
                             <li class="nav-item mx-2">
-                                <a href="ticket_sales_summary" class="active text-center"  style="color: red;">
+                                <a href="ticket_sales_summary" class="active text-center"  style="color: black;">
                                     Detailed Report
                                 </a>
                             </li>
@@ -324,10 +330,10 @@
       const ctx = document.getElementById('salesChart').getContext('2d');
   
       // Pass the data dynamically from the backend
-      const totalAdultAmount = {{ total_adult_amount|default:0 }};
-      const totalChildrenAmount = {{ total_children_amount|default:0 }};
-      const totalStudentAmount = {{ total_student_amount|default:0 }};
-  
+const totalAdultAmount = {{ total_adult_amount|default:0 }};
+const totalChildrenAmount = {{ total_children_amount|default:0 }};
+const totalStudentAmount = {{ total_student_amount|default:0 }};
+
       const salesChart = new Chart(ctx, {
           type: 'bar',
           data: {
