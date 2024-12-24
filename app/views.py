@@ -14,9 +14,13 @@ from django.utils.dateparse import parse_date  # Use to parse the date
 from datetime import datetime
 from django.utils.cache import add_never_cache_headers
 from django.views.decorators.cache import cache_control  # Import cache_control
+from datetime import datetime, timedelta
+from django.utils.timezone import make_aware
+from django.shortcuts import render, redirect
+from .models import Ticket
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from .models import Ticket
 
 
 def add_user_view(request):
@@ -127,8 +131,12 @@ def home_view(request):
                 # Handle any errors, log them if necessary
                 print(f"Error: {e}")
                 return render(request, 'home.html')
+# Query tickets ordered by 'created_at' field in descending order (latest first)
+        tickets = Ticket.objects.all().order_by('-created_at')
 
-        return render(request, 'home.html')
+        # Pass the tickets to the template
+        return render(request, 'home.html', {'tickets': tickets})
+    return render(request, 'home.html')
 
 # @login_required(login_url='/login')
 # def collection_report(request):
@@ -152,14 +160,18 @@ def export_ticket_data(request):
     today = timezone.now().date()
 
     # Apply filter based on the selected option
+    
     if filter_option == 'today':
         collection_report = collection_report.filter(created_at__date=today)
     elif filter_option == 'yesterday':
         yesterday = today - timedelta(days=1)
         collection_report = collection_report.filter(created_at__date=yesterday)
-    elif filter_option == 'day_before_yesterday':
-        day_before_yesterday = today - timedelta(days=2)
-        collection_report = collection_report.filter(created_at__date=day_before_yesterday)
+    elif filter_option == 'last_week':
+        last_week = today - timedelta(days=7)
+        collection_report = collection_report.filter(created_at__date=last_week)
+    elif filter_option == 'last_month':
+        last_month = today - timedelta(days=30)
+        collection_report = collection_report.filter(created_at__date=last_month)
     # Loop through the queryset and write the rows into the Excel file
     for ticket in collection_report:
         ws.append([
@@ -182,6 +194,7 @@ def export_ticket_data(request):
 
 
 @never_cache
+
 def ticket_report_view(request):
     if not request.user.is_authenticated or (request.user.is_authenticated and not request.user.is_active):
         return redirect('/')  
@@ -192,7 +205,7 @@ def ticket_report_view(request):
     today = timezone.now().date()
 
     # Initialize the queryset
-    collection_report = Ticket.objects.all()
+    collection_report = Ticket.objects.all().order_by('-created_at')  # Order by newest first
 
     # Apply filter based on the selected option
     if filter_option == 'today':
@@ -200,15 +213,15 @@ def ticket_report_view(request):
     elif filter_option == 'yesterday':
         yesterday = today - timedelta(days=1)
         collection_report = collection_report.filter(created_at__date=yesterday)
-    elif filter_option == 'day_before_yesterday':
-        day_before_yesterday = today - timedelta(days=2)
-        collection_report = collection_report.filter(created_at__date=day_before_yesterday)
-        
-    
-    # Convert start_date and end_date to proper date objects if provided
-    if start_date and end_date:
-        # Convert strings to date objects
+    elif filter_option == 'last_week':
+        last_week_start = today - timedelta(days=7)
+        collection_report = collection_report.filter(created_at__date__gte=last_week_start, created_at__date__lte=today)
+    elif filter_option == 'last_month':
+        last_month_start = today - timedelta(days=30)
+        collection_report = collection_report.filter(created_at_dategte=last_month_start, created_atdate_lte=today)
+    elif filter_option == 'custom' and start_date and end_date:
         try:
+            # Convert start_date and end_date to proper date objects
             start_date = timezone.datetime.strptime(start_date, '%Y-%m-%d').date()
             end_date = timezone.datetime.strptime(end_date, '%Y-%m-%d').date()
 
@@ -229,6 +242,7 @@ def ticket_report_view(request):
         'collection_report': collection_report,
         'start_date': start_date,
         'end_date': end_date,
+        'filter_option': filter_option,
     })
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def ticket_sales_summary_view(request):
@@ -238,13 +252,36 @@ def ticket_sales_summary_view(request):
     # Get the date from the GET request
     selected_date = request.GET.get('date')
     
-    # Initialize queryset and filter based on date
+    # # Initialize queryset and filter based on date
+    # if selected_date:
+    #     filter_date = parse_date(selected_date)
+    #     if filter_date:
+    #         filtered_tickets = Ticket.objects.filter(created_at__date=filter_date)
+    #     else:
+    #         filtered_tickets = Ticket.objects.all()
+    # else:
+    #     filtered_tickets = Ticket.objects.all()
+
     if selected_date:
         filter_date = parse_date(selected_date)
+    
         if filter_date:
+            # If the selected date is a valid date, filter by that specific date
             filtered_tickets = Ticket.objects.filter(created_at__date=filter_date)
+    
+        elif selected_date == 'last_week':
+            # Filter for the last 7 days
+            seven_days_ago = make_aware(datetime.now() - timedelta(days=7))
+            filtered_tickets = Ticket.objects.filter(created_at__date=seven_days_ago)
+    
+        elif selected_date == 'last_month':
+            # Filter for the last 30 days
+            thirty_days_ago = make_aware(datetime.now() - timedelta(days=30))
+            filtered_tickets = Ticket.objects.filter(created_at___date=thirty_days_ago)
+    
         else:
             filtered_tickets = Ticket.objects.all()
+
     else:
         filtered_tickets = Ticket.objects.all()
 
