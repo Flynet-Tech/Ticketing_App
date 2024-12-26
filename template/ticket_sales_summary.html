@@ -273,77 +273,73 @@
                               </div>
                              
                                 
-                                  <form method="GET" action="ticket_sales_summary" onsubmit="return validateDate()">
-                                <div class="form-group">
-                                  <label for="date">Select Date:</label>
-                                  <input 
-                                    type="date" 
-                                    id="date" 
-                                    name="date" 
-                                    value="{{ selected_date }}" 
-                                    class="form-control" 
-                                    onchange="handleDateChange()"
-                                  >
-                                </div>
-                                <div id="info" class="mt-2 text-center" style="font-weight: bold;"></div>
-                                <button 
-                                  type="submit" 
-                                  class="btn mt-3 w-100" 
-                                  style="background-color: MediumSeaGreen; color: white;"
-                                >
-                                  Filter
-                                </button>
-                              </form>
+                                 <form method="GET" action="ticket_sales_summary" id="filterForm">
+    <div class="form-group">
+        <label for="date">Select Date:</label>
+        <input 
+            type="date" 
+            id="date" 
+            name="date" 
+            value="{{ selected_date }}" 
+            class="form-control">
+        <small id="error" style="color: red; display: none;"></small>
+    </div>
+    <button 
+        type="submit" 
+        id="submitBtn" 
+        class="btn mt-3 w-100" 
+        style="background-color: MediumSeaGreen; color: white;">Filter</button>
+</form>
 
-                              <script>
-                                // Handle date change
-                                function handleDateChange() {
-                                  const dateInput = document.getElementById('date').value;
-                                  const infoElement = document.getElementById('info');
-                              
-                                  if (!dateInput) {
-                                    // No date selected
-                                    infoElement.textContent = "Data: 0";
-                                    infoElement.style.color = "red";
-                                  } else {
-                                    // A date is selected
-                                    const selectedDate = new Date(dateInput);
-                                    const today = new Date();
-                                    
-                                    // Reset time for comparison (only date matters)
-                                    today.setHours(0, 0, 0, 0);
-                                    selectedDate.setHours(0, 0, 0, 0);
-                              
-                                    if (selectedDate > today) {
-                                      infoElement.textContent = "Error: Future dates are not allowed.";
-                                      infoElement.style.color = "red";
-                                    } else {
-                                      infoElement.textContent = "Valid Date. Showing Information...";
-                                      infoElement.style.color = "green";
-                                    }
-                                  }
-                                }
-                              
-                                // Validate form submission
-                                function validateDate() {
-                                  const dateInput = document.getElementById('date').value;
-                                  const selectedDate = new Date(dateInput);
-                                  const today = new Date();
-                              
-                                  // Reset time for comparison
-                                  today.setHours(0, 0, 0, 0);
-                                  selectedDate.setHours(0, 0, 0, 0);
-                              
-                                  if (!dateInput) {
-                                    alert("No date selected. Data will show 0.");
-                                    return true; // Allow submission but show 0
-                                  } else if (selectedDate > today) {
-                                    alert("Future dates are not allowed.");
-                                    return false; // Prevent form submission
-                                  }
-                                  return true; // Allow valid submission
-                                }
-                              </script>
+<script>
+    document.getElementById('filterForm').addEventListener('submit', function(event) {
+        const dateInput = document.getElementById('date');
+        const errorElement = document.getElementById('error');
+        const selectedDate = new Date(dateInput.value);
+        const currentDate = new Date();
+        const minAllowedDate = new Date(currentDate.getFullYear(), 0, 1); // January 1 of the current year
+
+        errorElement.style.display = 'none'; // Hide error initially
+
+        // Check if date is empty
+        if (!dateInput.value) {
+            event.preventDefault();
+            errorElement.textContent = "Please select a date.";
+            errorElement.style.display = 'block';
+            return;
+        }
+
+        // Check if date is in the future
+        if (selectedDate > currentDate) {
+            event.preventDefault();
+            errorElement.textContent = "Upcoming dates are not allowed.";
+            errorElement.style.display = 'block';
+            return;
+        }
+
+        // Check if date is from previous years
+        if (selectedDate < minAllowedDate) {
+            event.preventDefault();
+            errorElement.textContent = "Dates from previous years are not allowed.";
+            errorElement.style.display = 'block';
+            return;
+        }
+    });
+
+    document.getElementById('date').addEventListener('change', function() {
+        const dateInput = document.getElementById('date');
+        const selectedDate = new Date(dateInput.value);
+        const currentDate = new Date();
+
+        if (!dateInput.value || selectedDate > currentDate) {
+            // Display "0" if no date is selected or the date is invalid
+            console.log("No data available");
+        } else {
+            console.log("Fetch and display data for:", dateInput.value);
+        }
+    });
+</script>
+
                                 
                                 
                              
